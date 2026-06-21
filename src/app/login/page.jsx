@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Login() {
     const router = useRouter();
@@ -16,17 +17,26 @@ export default function Login() {
     const [errorMsg, setErrorMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
+    const { setUser } = useAuth();
+
     const handleSubmit = async (e) => {
-        e.PreventDefault();
+        e.preventDefault();
         setErrorMsg("");
         setIsLoading(true);
 
         try {
             const response = await axios.post(
                 "http://localhost:5000/api/auth/login",
-                {email, password},
-                {withCredentials: true}
+                { email, password },
+                { withCredentials: true }
             );
+
+            // mark authenticated locally so closing/reopening the tab retains UI state
+            try { localStorage.setItem('isAuthenticated', 'true'); } catch (e) { }
+            // store user object locally for optimistic restore
+            try { if (response.data?.user) localStorage.setItem('user', JSON.stringify(response.data.user)); } catch (e) { }
+            // optimistically set user in context if server returned user info
+            if (response.data?.user) setUser(response.data.user);
 
             router.push("/dashboard");
         } catch (error) {
@@ -76,7 +86,7 @@ export default function Login() {
                                     onClick={() => setshowPassword(!showPassword)}
                                     className="absolute right-4 top-3.5 text-text-muted hover:text-sage-dark transition-colors"
                                 >
-                                    {showPassword ? <EyeOff size={20}  /> : <Eye size={20}  />}
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                 </button>
                             </div>
                         </div>
@@ -110,7 +120,7 @@ export default function Login() {
                         Dont have an account?{" "}
                         <Link href="/register" className="text-sage-dark font-semibold hover:text-sage-700 hover:underline transition-colors">
                             Sign Up
-                        </Link> 
+                        </Link>
                     </p>
                 </div>
                 {/* Kolom Kanan: Ilustrasi (Sekarang di urutan kedua) */}

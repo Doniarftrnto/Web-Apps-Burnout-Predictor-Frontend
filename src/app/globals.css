@@ -21,6 +21,18 @@
   --color-neutral-border: #e4e7ec; /* Abu-abu untuk garis pembatas/border (gunakan dengan opacity/transparansi jika perlu) */
   --color-text-dark: #1e1e1e; /* Hitam pekat untuk Heading / Judul */
   --color-text-muted: #525967; /* Abu-abu slate untuk sub-teks / deskripsi */
+  --animate-fade-in: fade-in 0.6s ease-out forwards;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 /* Mengatur warna dasar seluruh halaman web */
