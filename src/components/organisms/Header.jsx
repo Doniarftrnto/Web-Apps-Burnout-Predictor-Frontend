@@ -1,10 +1,23 @@
 'use client';
 
 import { useAuth } from "@/context/AuthContext";
+import { usePathname } from "next/navigation";
 import { Search, Bell, Menu } from "lucide-react";
 
 export default function Header({ onOpenSidebar }) {
     const { user } = useAuth();
+    const pathname = usePathname();
+
+    const getPageTitle = () => {
+        if (pathname == "/dashboard") {
+            return "Dashboard";
+        }
+        const segment = pathname.split("/")[2];
+        if (segment) {
+            return segment.charAt(0).toUpperCase() + segment.slice(1);
+        }
+        return "Dashboard";
+    };
 
     return (
         <header className="h-20 bg-mood-bg border-b border-neutral-border/60 px-4 md:px-8 flex items-center justify-between gap-4 sticky top-0 z-30">
@@ -19,7 +32,7 @@ export default function Header({ onOpenSidebar }) {
                 <div className="text-sm">
                     <span className="text-text-muted">Pages</span>
                     <span className="mx-2 text-neutral-border">/</span>
-                    <span className="text-text-dark font-bold">Dashboard</span>
+                    <span className="text-text-dark font-bold">{getPageTitle()}</span>
                 </div>
             </div>
 
@@ -27,7 +40,7 @@ export default function Header({ onOpenSidebar }) {
             <div className="flex items-center gap-3 md:gap-5 w-full md:w-auto justify-end">
                 {/* Search Bar */}
                 <div className="relative hidden sm:block w-64">
-                    <Search size={16} className="absolute left-3.5 top-3 text-text-muted/60" />
+                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted/60" />
                     <input
                         type="text"
                         placeholder="Search..."

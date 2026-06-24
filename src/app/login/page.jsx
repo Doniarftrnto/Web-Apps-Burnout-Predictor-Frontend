@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 
 export default function Login() {
     const router = useRouter();
@@ -60,12 +62,11 @@ export default function Login() {
                         {/* Input Email */}
                         <div>
                             <label className="block text-sm font-medium text-text-dark mb-2">Email</label>
-                            <input
+                            <Input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Enter your email"
-                                className="w-full border border-neutral-border rounded-xl px-4 py-3 focus:outline-none focus:border-sage-500 focus:ring-sage-500 transition-colors text-text-dark placeholder:text-text-muted/60"
                                 required
                             />
                         </div>
@@ -73,12 +74,11 @@ export default function Login() {
                         <div>
                             <label className="block text-sm font-medium text-text-dark mb-2">Password</label>
                             <div className="relative">
-                                <input
+                                <Input
                                     type={showPassword ? "text" : "password"}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Enter your password"
-                                    className="w-full border border-neutral-border rounded-xl px-4 py-3 focus:outline-none focus:border-sage-500 focus:ring-sage-500 transition-colors text-text-dark placeholder:text-text-muted/60"
                                     required
                                 />
                                 <button
@@ -107,13 +107,13 @@ export default function Login() {
                             </p>
                         )}
                         {/* Tombol Login */}
-                        <button
+                        <Button
                             type="submit"
-                            disabled={isLoading}
-                            className="mt-4 w-full bg-sage-dark text-white font-medium rounded-xl py-3.5 hover:bg-sage-700 transition-all active:scale-[0.98] ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}"
+                            isLoading={isLoading}
+                            className="mt-4"
                         >
-                            {isLoading ? 'Signing in...' : 'Sign In'}
-                        </button>
+                            Sign In
+                        </Button>
                     </form>
                     {/* Navigasi ke Register */}
                     <p className="mt-8 text-center text-sm text-text-muted">
